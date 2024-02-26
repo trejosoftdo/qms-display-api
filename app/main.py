@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from .auth import router as authorize
-# from .service_turn import router as service_turn
+from .service_turn import router as service_turn
 from . import constants
 from . import exceptions
 
@@ -25,6 +25,7 @@ app.add_middleware(
     allow_methods=constants.ALLOWED_METHODS,
     allow_headers=constants.ALLOWED_HEADERS,
 )
+
 
 @app.exception_handler(HTTPException)
 def http_exception_handler(_: Request, exc: HTTPException):
@@ -67,4 +68,4 @@ def request_validation_error_handler(_: Request, exc: RequestValidationError):
 
 
 app.include_router(authorize.router, prefix=constants.AUTH_ROUTE_PREFIX)
-# app.include_router(service_turn.router, prefix=constants.SERVICE_TURNS_ROUTE_PREFIX)
+app.include_router(service_turn.router, prefix=constants.SERVICE_TURNS_ROUTE_PREFIX)
