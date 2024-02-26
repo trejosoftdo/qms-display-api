@@ -1,0 +1,373 @@
+openapi: 3.0.2
+info:
+  title: QMS Display API
+  description: The API for the QMS Display Application.
+  version: 1.0.0
+paths:
+  /api/v1/auth/device:
+    get:
+      tags:
+        - auth
+      summary: Authorize Device
+      description: |-
+        Authorize a device to an application in context
+
+        Args:
+            application (str, optional): The application in context.
+
+        Returns:
+            models.AuthorizeDeviceResponse: Authorization information such as deviceCode, and userCode.
+      operationId: authorizeDevice
+      parameters:
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizeDeviceResponse'
+        '400':
+          description: Client is sending an incorrect format of API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '401':
+          description: Client is not authenticated against the API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '403':
+          description: Client doesn't have permission to request this resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '404':
+          description: Resource could not be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '422':
+          description: The server was unable to process the request because it contains invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '500':
+          description: Unexpected internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+  /api/v1/auth/tokens:
+    post:
+      tags:
+        - auth
+      summary: Get Auth Tokens
+      description: |-
+        Gets the authorization tokens for the given device code and application in context
+
+        Args:
+            application (str, optional): The application in context.
+            item (models.GetTokensPayload): The required payload
+
+        Returns:
+            models.GetTokensResponse: The authorization tokens information
+      operationId: getAuthTokens
+      parameters:
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTokensPayload'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTokensResponse'
+        '400':
+          description: Client is sending an incorrect format of API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '401':
+          description: Client is not authenticated against the API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '403':
+          description: Client doesn't have permission to request this resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '404':
+          description: Resource could not be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '422':
+          description: The server was unable to process the request because it contains invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '500':
+          description: Unexpected internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+  /api/v1/auth/token/refresh:
+    post:
+      tags:
+        - auth
+      summary: Get New Access Token
+      description: |-
+        Gets a new access token for the given refresh token and application in context
+
+        Args:
+            application (str, optional): The application in context.
+            item (models.GetNewAccessTokenPayload): The required payload
+
+        Returns:
+            models.GetNewAccessTokenResponse: The new access token information
+      operationId: getNewAccessToken
+      parameters:
+        - required: true
+          schema:
+            title: Application
+            type: string
+          name: application
+          in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetNewAccessTokenPayload'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNewAccessTokenResponse'
+        '400':
+          description: Client is sending an incorrect format of API request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '401':
+          description: Client is not authenticated against the API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '403':
+          description: Client doesn't have permission to request this resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '404':
+          description: Resource could not be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '422':
+          description: The server was unable to process the request because it contains invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '500':
+          description: Unexpected internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+components:
+  schemas:
+    APIResponse:
+      title: APIResponse
+      required:
+        - code
+        - type
+        - message
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+        type:
+          title: Type
+          type: string
+        message:
+          title: Message
+          type: string
+      description: API general response
+    AuthorizeDeviceResponse:
+      title: AuthorizeDeviceResponse
+      required:
+        - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuthorizeDeviceResponseData'
+      description: |-
+        Authorize device response
+
+        Args:
+            BaseModel (class): Base model class
+    AuthorizeDeviceResponseData:
+      title: AuthorizeDeviceResponseData
+      required:
+        - deviceCode
+        - userCode
+        - expiresIn
+        - interval
+        - verificationURI
+      type: object
+      properties:
+        deviceCode:
+          title: Devicecode
+          type: string
+        userCode:
+          title: Usercode
+          type: string
+        expiresIn:
+          title: Expiresin
+          type: integer
+        interval:
+          title: Interval
+          type: integer
+        verificationURI:
+          title: Verificationuri
+          type: string
+      description: |-
+        Authorize device response data
+
+        Args:
+            BaseModel (class): Base model class
+    GetNewAccessTokenPayload:
+      title: GetNewAccessTokenPayload
+      required:
+        - refreshToken
+      type: object
+      properties:
+        refreshToken:
+          title: Refreshtoken
+          type: string
+      description: |-
+        Get new access token payload
+
+        Args:
+            BaseModel (class): Base model class
+    GetNewAccessTokenResponse:
+      title: GetNewAccessTokenResponse
+      required:
+        - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GetNewAccessTokenResponseData'
+      description: |-
+        Get new access token response
+
+        Args:
+            BaseModel (class): Base model class
+    GetNewAccessTokenResponseData:
+      title: GetNewAccessTokenResponseData
+      required:
+        - accessToken
+        - expiresIn
+      type: object
+      properties:
+        accessToken:
+          title: Accesstoken
+          type: string
+        expiresIn:
+          title: Expiresin
+          type: integer
+      description: |-
+        Get new access token response data
+
+        Args:
+            BaseModel (class): Base model class
+    GetTokensPayload:
+      title: GetTokensPayload
+      required:
+        - deviceCode
+      type: object
+      properties:
+        deviceCode:
+          title: Devicecode
+          type: string
+      description: |-
+        Payload to get the device tokens
+
+        Args:
+            BaseModel (class): Base model class
+    GetTokensResponse:
+      title: GetTokensResponse
+      required:
+        - data
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GetTokensResponseData'
+      description: |-
+        Get tokens response
+
+        Args:
+            BaseModel (class): Base model class
+    GetTokensResponseData:
+      title: GetTokensResponseData
+      required:
+        - accessToken
+        - refreshToken
+        - expiresIn
+        - refreshExpiresIn
+      type: object
+      properties:
+        accessToken:
+          title: Accesstoken
+          type: string
+        refreshToken:
+          title: Refreshtoken
+          type: string
+        expiresIn:
+          title: Expiresin
+          type: integer
+        refreshExpiresIn:
+          title: Refreshexpiresin
+          type: integer
+      description: |-
+        Get tokens response data
+
+        Args:
+            BaseModel (class): Base model class
