@@ -20,5 +20,6 @@
 - [ ] I have added or modified unit tests (if applicable).
 - [ ] I have run the linter and fixed any issues.
 - [ ] I have run the unit tests and fixed any issues.
+- [ ] I have run the integration tests and fixed any issues.
 - [ ] My code follows the project's coding style guidelines.
 - [ ] I have added comments in the code where necessary.
