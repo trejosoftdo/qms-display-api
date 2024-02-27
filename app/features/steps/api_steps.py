@@ -116,9 +116,10 @@ def step_check_response_status(context, status_name):
         context (Any): Test context
         status_name (string): Status name
     """
-    print(context.response.status_code)
-    print(getattr(status, status_name))
-    print(context.response.json())
+    # print(context.response.status_code)
+    # print(getattr(status, status_name))
+    # print(context.response.json())
+    # print(context.headers)
     assert context.response.status_code == getattr(status, status_name)
 
 
