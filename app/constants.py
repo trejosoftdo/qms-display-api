@@ -32,6 +32,7 @@ SERVICE_TURNS_ROUTE_PREFIX = "/api/v1/serviceturns"
 # CORS
 ALLOWED_ORIGINS = [
     "http://localhost",
+    "http://localhost:8081",
     "http://localhost:8082",
 ]
 
