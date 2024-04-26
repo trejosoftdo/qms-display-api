@@ -2,6 +2,7 @@
 """
 
 from fastapi import APIRouter, Depends, Header
+from fastapi.responses import StreamingResponse
 from .. import helpers
 from .. import constants
 from .. import responses
@@ -40,14 +41,9 @@ def get_turns_status_table(
     dependencies=[Depends(helpers.validate_token(constants.READ_SERVICE_TURNS_SCOPE))],
     tags=TAGS,
     operation_id=GET_TURN_AUDIO_OPERATION_ID,
-    response_model=models.ServiceTurnAudioResponse,
     responses=responses.responses_descriptions,
 )
-def get_turn_audio(turn_name: str):
+def get_turn_audio(turn_name: str) -> StreamingResponse: 
     """Gets the audio of a turn"""
-    result = handlers.get_turn_audio(turn_name)
-    print(result)
-
-    return models.ServiceTurnAudioResponse(
-        name=turn_name
-    )
+    audio = handlers.get_turn_audio(turn_name)
+    return StreamingResponse(audio, media_type="audio/mpeg")

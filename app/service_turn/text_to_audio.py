@@ -17,7 +17,7 @@ ES_LANGUAGE = "es-la"
 EN_LANGUAGE = "en-us"
 SPEECH_RATE = 170
 VOLUME = 1.0
-TEMP_FILE = f"{current_dir}/voice.wav"
+TEMP_FILE = f"{current_dir}/voice.mp3"
 TEMP_FILE_MODE = "rb"
 
 
@@ -40,16 +40,13 @@ def text_to_audio(
     Returns:
         io.BytesIO: Audio information
     """
-    print("Init engine")
     engine = pyttsx3.init()
     engine.setProperty(VOICE_PROPERTY, f"{language}+{gender}{variant}")
     engine.setProperty(SPEECH_RATE_PROPERTY, speech_rate)
     engine.setProperty(VOLUME_PROPERTY, VOLUME)
-    print("Saving audio")
     engine.save_to_file(text, TEMP_FILE)
     engine.runAndWait()
 
-    print("Reading audio")
     with open(TEMP_FILE, TEMP_FILE_MODE) as file:
         audio_bytes = io.BytesIO(file.read())
 
