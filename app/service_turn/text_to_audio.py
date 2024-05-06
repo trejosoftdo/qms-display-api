@@ -1,12 +1,7 @@
 import pyttsx3
-import io
-import os 
-
+import os
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
-
-
-
 VOICE_PROPERTY = "voice"
 SPEECH_RATE_PROPERTY = "rate"
 VOLUME_PROPERTY = "volume"
@@ -15,7 +10,7 @@ MALE_GENDER = "m"
 DEFAULT_VARIANT = 5
 ES_LANGUAGE = "es-la"
 EN_LANGUAGE = "en-us"
-SPEECH_RATE = 170
+SPEECH_RATE = 120
 VOLUME = 1.0
 TEMP_FILE = f"{current_dir}/voice.mp3"
 TEMP_FILE_MODE = "rb"
@@ -27,7 +22,7 @@ def text_to_audio(
     gender: str = FEMALE_GENDER,
     variant: str = DEFAULT_VARIANT,
     speech_rate: str = SPEECH_RATE,
-) -> io.BytesIO:
+) -> str:
     """_summary_
 
     Args:
@@ -38,16 +33,20 @@ def text_to_audio(
         speech_rate (str, optional): Speech rate. Defaults to SPEECH_RATE.
 
     Returns:
-        io.BytesIO: Audio information
+        str: Audio information
     """
     engine = pyttsx3.init()
     engine.setProperty(VOICE_PROPERTY, f"{language}+{gender}{variant}")
     engine.setProperty(SPEECH_RATE_PROPERTY, speech_rate)
     engine.setProperty(VOLUME_PROPERTY, VOLUME)
+
+    if os.path.exists(TEMP_FILE):
+        os.remove(TEMP_FILE)
+
     engine.save_to_file(text, TEMP_FILE)
     engine.runAndWait()
 
-    with open(TEMP_FILE, TEMP_FILE_MODE) as file:
-        audio_bytes = io.BytesIO(file.read())
+    while not os.path.exists(TEMP_FILE) or os.stat(TEMP_FILE).st_size <= 0:
+        pass
 
-    return audio_bytes
+    return TEMP_FILE
