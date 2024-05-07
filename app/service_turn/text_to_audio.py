@@ -1,5 +1,6 @@
-import pyttsx3
+"""Transform text to speech audio"""
 import os
+import pyttsx3
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 VOICE_PROPERTY = "voice"
