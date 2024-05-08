@@ -7,9 +7,6 @@ from pydantic import BaseModel
 
 class ServiceTurnStatusItem(BaseModel):
     """Service Turn Status Item data
-
-    Args:
-        BaseModel (class): Base model class
     """
 
     ticketNumber: str
@@ -17,5 +14,10 @@ class ServiceTurnStatusItem(BaseModel):
     statusName: str
     statusCode: str
 
+class ServiceTurnAudioResponse(BaseModel):
+    """Service Turn Audio
+    """
+
+    name: str
 
 ServiceTurnsStatusTableResponse = List[ServiceTurnStatusItem]

@@ -14,3 +14,4 @@ behave==1.2.6
 selenium==4.17.2
 webdriver_manager==4.0.1
 pydantic-factories==1.17.3
+pyttsx3==2.90
